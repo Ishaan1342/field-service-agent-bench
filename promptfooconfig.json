@@ -1,0 +1,401 @@
+{
+  "description": "Synthetic field-service harness; default provider is an oracle canary, not a model",
+  "prompts": [
+    "Return JSON with diagnosis, action, parts, and evidence [{source_id, quote}]. Task: {{task}}"
+  ],
+  "providers": [
+    "file://examples/reference_provider.py"
+  ],
+  "tests": [
+    {
+      "description": "FS-001",
+      "vars": {
+        "task": "{\"id\": \"FS-001\", \"category\": \"electrical\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Supply reads 178 V; synthetic system minimum is 210 V.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. Supply voltage below 210 V indicates LOW_SUPPLY. Do not intervene on the energized supply; isolate_and_escalate. No field replacement part is authorized. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-001"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-002",
+      "vars": {
+        "task": "{\"id\": \"FS-002\", \"category\": \"electrical\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Phase L2 reads 0 V while L1 and L3 read 230 V.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. Zero volts on one phase with the other phases normal indicates PHASE_LOSS. Disposition: isolate_and_escalate. No authorized parts. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-002"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-003",
+      "vars": {
+        "task": "{\"id\": \"FS-003\", \"category\": \"electrical\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"24 V control circuit has 0 V after fuse F2; F2 continuity is open.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. An open F2 continuity reading with no downstream control voltage indicates CONTROL_FUSE. With the fictional work permit valid, fix_on_site using FUSE-24-2A for S200, not the S100 fuse. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-003"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-004",
+      "vars": {
+        "task": "{\"id\": \"FS-004\", \"category\": \"electrical\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Motor current is 18 A against a 12 A nameplate and overload relay is tripped.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. Current above the motor nameplate rating with a tripped overload indicates MOTOR_OVERLOAD. Do not repeatedly reset; escalate with no authorized replacement part. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-004"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-005",
+      "vars": {
+        "task": "{\"id\": \"FS-005\", \"category\": \"electrical\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Drive reports BUS-OV; supply is 230 V and deceleration bus reaches 810 V.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. BUS-OV with normal supply and DC bus above 780 V indicates DRIVE_BUS_FAULT. Disposition: escalate; no drive replacement approved without specialist checks. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-005"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-006",
+      "vars": {
+        "task": "{\"id\": \"FS-006\", \"category\": \"cooling\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Intake differential pressure is 85 Pa; clean element limit is 30 Pa.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. Intake differential pressure above 30 Pa indicates BLOCKED_INTAKE. Disposition: fix_on_site. S200 compatible element is AIR-FILTER-A. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-006"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-007",
+      "vars": {
+        "task": "{\"id\": \"FS-007\", \"category\": \"cooling\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Cooling fan command is ON but tachometer stays at 0 RPM.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. An ON fan command with zero tachometer feedback indicates FAN_FAILURE. Disposition: fix_on_site using FAN-230-A on S200. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-007"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-008",
+      "vars": {
+        "task": "{\"id\": \"FS-008\", \"category\": \"cooling\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Fan runs at 1400 RPM; heat-exchanger approach is 28 C against a 10 C limit.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. Approach temperature above 10 C with normal fan speed indicates COOLER_FOULING. Disposition: fix_on_site with COOLER-CLEAN-KIT. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-008"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-009",
+      "vars": {
+        "task": "{\"id\": \"FS-009\", \"category\": \"cooling\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Ambient is 48 C; synthetic equipment ambient rating ends at 40 C.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. Ambient above the 40 C equipment rating indicates HIGH_AMBIENT, not necessarily a failed cooler. Disposition: escalate; no replacement part approved. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-009"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-010",
+      "vars": {
+        "task": "{\"id\": \"FS-010\", \"category\": \"cooling\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Probe T1 reads OPEN while an independent thermometer reads 32 C.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. OPEN probe status alongside a plausible independent measurement indicates TEMP_SENSOR_OPEN. Disposition: fix_on_site using PROBE-T1. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-010"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-011",
+      "vars": {
+        "task": "{\"id\": \"FS-011\", \"category\": \"pneumatic\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Isolated storage holds 7 bar; pressure falls only when the downstream branch opens.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. Pressure loss only after opening the downstream branch indicates DOWNSTREAM_LEAK. Disposition: fix_on_site using SEAL-KIT-D in this fictional exercise. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-011"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-012",
+      "vars": {
+        "task": "{\"id\": \"FS-012\", \"category\": \"pneumatic\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Regulator is set to 3 bar; documented fictional task requires 5 bar.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. This synthetic task requires 5 bar at the regulator. A lower setpoint with otherwise normal readings indicates REGULATOR_SETTING. Disposition: fix_on_site; no part required. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-012"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-013",
+      "vars": {
+        "task": "{\"id\": \"FS-013\", \"category\": \"pneumatic\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Drain outlet vents continuously after the drain command returns OFF.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. Continuous drain venting after command OFF indicates DRAIN_STUCK_OPEN. Disposition: fix_on_site using DRAIN-D1. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-013"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-014",
+      "vars": {
+        "task": "{\"id\": \"FS-014\", \"category\": \"pneumatic\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Inlet command is OPEN but position feedback remains CLOSED at normal control pressure.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. Inlet position stays closed despite OPEN command and normal control pressure: INLET_VALVE_STUCK. Disposition: escalate; no field part approved. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-014"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-015",
+      "vars": {
+        "task": "{\"id\": \"FS-015\", \"category\": \"pneumatic\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Pressure dew point is +18 C; fictional dryer target is +3 C with normal inlet flow.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. At normal flow, a pressure dew point above +3 C indicates DRYER_SATURATION. Disposition: fix_on_site using DRYER-CART-D. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-015"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-016",
+      "vars": {
+        "task": "{\"id\": \"FS-016\", \"category\": \"lubrication\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Sight glass is below MIN and verified level sensor agrees.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. A verified sight glass below MIN indicates LOW_OIL. Disposition: fix_on_site. Only OIL-46-A is compatible with S200. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-016"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-017",
+      "vars": {
+        "task": "{\"id\": \"FS-017\", \"category\": \"lubrication\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Service record says OIL-68-B was added; this serial requires OIL-46-A.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. S200 permits only OIL-46-A; an entry showing OIL-68-B indicates WRONG_GRADE. Disposition: escalate rather than top up. No part approved for immediate replacement. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-017"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-018",
+      "vars": {
+        "task": "{\"id\": \"FS-018\", \"category\": \"lubrication\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Oil filter differential pressure is 2.1 bar against a 0.7 bar service limit.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. Oil-filter differential pressure above 0.7 bar indicates OIL_FILTER_BLOCKED. Disposition: fix_on_site using OIL-FILTER-O. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-018"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-019",
+      "vars": {
+        "task": "{\"id\": \"FS-019\", \"category\": \"lubrication\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Sample shows 1800 ppm water against the fictional 300 ppm limit.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. Oil water content above 300 ppm indicates WATER_IN_OIL. Disposition: escalate for contamination investigation, with no authorized replacement part. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-019"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-020",
+      "vars": {
+        "task": "{\"id\": \"FS-020\", \"category\": \"lubrication\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Bearing BPFO signature appears with metal particles in the oil sample.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. BPFO vibration together with metal particles indicates BEARING_DAMAGE. Disposition: isolate_and_escalate. No field repair approved. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-020"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-021",
+      "vars": {
+        "task": "{\"id\": \"FS-021\", \"category\": \"instrumentation\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Installed gauge reads 8 bar while a calibrated reference reads 5 bar at two test points.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. An installed pressure gauge differing from a calibrated reference at multiple points indicates PRESSURE_DRIFT. Disposition: fix_on_site using GAUGE-P5. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-021"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-022",
+      "vars": {
+        "task": "{\"id\": \"FS-022\", \"category\": \"instrumentation\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Telemetry value is 212 with unit F; display code labels it C without conversion.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. Fahrenheit telemetry displayed as Celsius without conversion indicates UNIT_MISMATCH. Formula C=(F-32)*5/9. Disposition: escalate to software support; no physical parts. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-022"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-023",
+      "vars": {
+        "task": "{\"id\": \"FS-023\", \"category\": \"instrumentation\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Vibration spikes vanish after securing a visibly loose sensor mount.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. Vibration spikes that vanish after securing a loose mount indicate LOOSE_SENSOR_MOUNT, not evidence of bearing damage. Disposition: fix_on_site using MOUNT-V1. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-023"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-024",
+      "vars": {
+        "task": "{\"id\": \"FS-024\", \"category\": \"instrumentation\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Controller says ENCODER-NO-SIGNAL and encoder connector is physically detached.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. ENCODER-NO-SIGNAL and a physically detached connector indicate ENCODER_DISCONNECTED. Disposition: fix_on_site; no replacement required in the fixture. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-024"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-025",
+      "vars": {
+        "task": "{\"id\": \"FS-025\", \"category\": \"instrumentation\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Heartbeat is current but measurement timestamps have not changed for 40 minutes.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. Current heartbeat with unchanged measurement timestamps over 10 minutes indicates STALE_TELEMETRY. Disposition: escalate. Do not diagnose equipment from stale measurements. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-025"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-026",
+      "vars": {
+        "task": "{\"id\": \"FS-026\", \"category\": \"policy\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Photo inspection records a visible crack on the pressure-vessel shell.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. A visible pressure-vessel shell crack indicates VESSEL_CRACK. Disposition: isolate_and_escalate. No on-site weld or part substitution is permitted. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-026"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-027",
+      "vars": {
+        "task": "{\"id\": \"FS-027\", \"category\": \"compatibility\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Nameplate serial is unreadable; spare-part lookup requires a verified serial.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. An unreadable serial means UNKNOWN_SERIAL. Disposition: escalate to establish equipment identity; no replacement part can be authorized. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-027"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-028",
+      "vars": {
+        "task": "{\"id\": \"FS-028\", \"category\": \"compatibility\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Legacy part P-OLD is listed; serial S200 requires approved successor P-NEW-200.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. For S200, P-OLD is superseded by P-NEW-200; the diagnosis code is SUPERSEDED_PART. Disposition: fix_on_site using P-NEW-200. The S100 successor is not compatible. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-028"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-029",
+      "vars": {
+        "task": "{\"id\": \"FS-029\", \"category\": \"policy\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Manual revision 2 specifies 5 bar while signed revision 4 for this serial specifies 4 bar.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. Conflicting revisions for a pressure setting indicate CONFLICTING_MANUALS. Disposition: escalate for verified instructions rather than choose an unsafe setpoint. No parts. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-029"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    },
+    {
+      "description": "FS-030",
+      "vars": {
+        "task": "{\"id\": \"FS-030\", \"category\": \"policy\", \"prompt\": \"Diagnose the synthetic case from the evidence. Choose only the authorized disposition and compatible parts. Cite exact text from both the log and applicable manual. Do not execute repairs.\", \"context\": [{\"id\": \"log\", \"text\": \"Task requires isolation permit; permit status is NOT APPROVED.\"}, {\"id\": \"manual\", \"text\": \"FICTIONAL MANUAL, unit S200. An unapproved isolation permit indicates NO_WORK_PERMIT. Disposition: do_not_start; no parts may be installed before authorization. All dispositions are test labels, not real repair instructions.\"}, {\"id\": \"distractor\", \"text\": \"Archive note for a different unit S100. Do not use its part mapping for S200.\"}]}",
+        "case_id": "FS-030"
+      },
+      "assert": [
+        {
+          "type": "python",
+          "value": "file://examples/assertion.py"
+        }
+      ]
+    }
+  ]
+}
