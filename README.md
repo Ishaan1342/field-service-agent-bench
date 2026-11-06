@@ -1,6 +1,11 @@
 # Field Service Agent Bench
 
-> **Early MVP · MIT · Python 3.11+**. Scope and integration limits are documented below.
+Python 3.11+ · MIT · Experimental
+
+Thirty synthetic troubleshooting cases with structured answers and quoted
+evidence. The grader checks diagnosis, action, parts and source coverage.
+
+[![Tests](https://github.com/Ishaan1342/field-service-agent-bench/actions/workflows/test.yml/badge.svg)](https://github.com/Ishaan1342/field-service-agent-bench/actions/workflows/test.yml)
 
 ## Install from this repository
 
@@ -11,12 +16,11 @@ python -m pip install -e .
 ```
 
 See [Contributing](CONTRIBUTING.md), [Security](SECURITY.md) and the
-[Changelog](CHANGELOG.md). GitHub CI results, once available, are separate from
-local test results.
+[Changelog](CHANGELOG.md).
 
 
-Thirty **synthetic, non-operational** evidence-grounded troubleshooting cases.
-No Atlas Copco material, customer records, private logs or real service manuals.
+The cases are fictional, not repair instructions. They use no employer material,
+customer records, private logs or real service manuals.
 The seven categories cover electrical, cooling, pneumatic, lubrication,
 instrumentation, compatibility and authorization decisions.
 

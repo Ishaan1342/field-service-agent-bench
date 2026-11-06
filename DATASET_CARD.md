@@ -5,7 +5,7 @@
 A small public smoke-test dataset for structured, evidence-grounded agent
 outputs. It is not a validated industrial troubleshooting benchmark.
 
-## Composition and provenance
+## Dataset
 
 Thirty English-language fictional cases across electrical, cooling, pneumatic,
 lubrication, instrumentation, compatibility and policy categories. Each includes

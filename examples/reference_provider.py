@@ -1,4 +1,5 @@
 """Oracle fixture for checking the promptfoo integration. NOT a model baseline."""
+
 import json
 from servicebench.evaluate import load_cases, oracle_answer
 

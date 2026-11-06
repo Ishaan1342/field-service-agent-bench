@@ -1,4 +1,5 @@
 """Exact structured-outcome scoring. No LLM judge or network access."""
+
 import json
 from pathlib import Path
 
@@ -18,13 +19,18 @@ def grade(case, answer):
         except (ValueError, TypeError):
             answer = None
     if not isinstance(answer, dict):
-        return {"pass": False, "score": 0.0, "reason": "Missing or invalid JSON object", "checks": {}}
+        return {
+            "pass": False,
+            "score": 0.0,
+            "reason": "Missing or invalid JSON object",
+            "checks": {},
+        }
     expected = case["expected"]
     checks = {
         "diagnosis": answer.get("diagnosis") == expected["diagnosis"],
         "action": answer.get("action") == expected["action"],
-        "compatible_parts": isinstance(answer.get("parts"), list) and
-            answer["parts"] == expected["parts"],
+        "compatible_parts": isinstance(answer.get("parts"), list)
+        and answer["parts"] == expected["parts"],
     }
     sources = {d["id"]: d["text"] for d in case["context"]}
     evidence = answer.get("evidence")
@@ -36,7 +42,11 @@ def grade(case, answer):
                 valid_quotes = False
                 continue
             source, quote = item.get("source_id"), item.get("quote")
-            if not isinstance(source, str) or not isinstance(quote, str) or len(quote.strip()) < 8:
+            if (
+                not isinstance(source, str)
+                or not isinstance(quote, str)
+                or len(quote.strip()) < 8
+            ):
                 valid_quotes = False
                 continue
             if source not in sources or quote not in sources[source]:
@@ -46,9 +56,13 @@ def grade(case, answer):
     checks["verbatim_evidence"] = valid_quotes
     checks["required_sources"] = set(expected["sources"]).issubset(valid_sources)
     score = sum(checks.values()) / len(checks)
-    return {"pass": all(checks.values()), "score": score,
-            "reason": "; ".join(k for k, passed in checks.items() if not passed) or "All checks passed",
-            "checks": checks}
+    return {
+        "pass": all(checks.values()),
+        "score": score,
+        "reason": "; ".join(k for k, passed in checks.items() if not passed)
+        or "All checks passed",
+        "checks": checks,
+    }
 
 
 def evaluate(cases, predictions):
@@ -67,17 +81,29 @@ def evaluate(cases, predictions):
     rows = [{"case_id": c["id"], **grade(c, answers.get(c["id"]))} for c in cases]
     total = len(cases)
     passed = sum(r["pass"] for r in rows)
-    return {"schema_version": 1, "attempted": total, "provided": len(answers),
-            "missing": total - len(answers), "passed": passed, "failed": total - passed,
-            "pass_rate": passed / total if total else 0.0,
-            "mean_score": sum(r["score"] for r in rows) / total if total else 0.0,
-            "results": rows}
+    return {
+        "schema_version": 1,
+        "attempted": total,
+        "provided": len(answers),
+        "missing": total - len(answers),
+        "passed": passed,
+        "failed": total - passed,
+        "pass_rate": passed / total if total else 0.0,
+        "mean_score": sum(r["score"] for r in rows) / total if total else 0.0,
+        "results": rows,
+    }
 
 
 def oracle_answer(case):
     """Test-harness canary with access to labels. NOT an agent or model baseline."""
     expected = case["expected"]
-    return {"diagnosis": expected["diagnosis"], "action": expected["action"],
-            "parts": expected["parts"],
-            "evidence": [{"source_id": d["id"], "quote": d["text"]}
-                         for d in case["context"] if d["id"] in expected["sources"]]}
+    return {
+        "diagnosis": expected["diagnosis"],
+        "action": expected["action"],
+        "parts": expected["parts"],
+        "evidence": [
+            {"source_id": d["id"], "quote": d["text"]}
+            for d in case["context"]
+            if d["id"] in expected["sources"]
+        ],
+    }
